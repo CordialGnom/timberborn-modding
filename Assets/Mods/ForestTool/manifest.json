@@ -1,0 +1,13 @@
+{
+  "Name": "Forest Tool",
+  "Version": "0.1",
+  "Id": "Cordial.ForestTool",
+  "MinimumGameVersion": "0.0.0.0",
+  "Description": "A simple mod which contains tools for forestation.",
+  "RequiredMods": [
+  {
+	"Id": "TimberApi",
+	"MinimumVersion": "0.7.0.0"
+  }
+  ]
+}

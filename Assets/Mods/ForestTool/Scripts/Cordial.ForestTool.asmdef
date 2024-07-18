@@ -1,0 +1,9 @@
+{
+  "name": "Cordial.ForestTool",
+  "precompiledReferences": [
+        "TimberApi.dll",
+        "TimberApi.Core.dll",
+        "TimberApi.ToolSystem.dll"
+    ],
+   "autoReferenced": false
+}
