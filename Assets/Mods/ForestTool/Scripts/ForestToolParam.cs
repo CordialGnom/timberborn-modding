@@ -124,6 +124,7 @@ namespace Mods.ForestTool.Scripts
             // calculate amount of numbers to be base of randomization
             foreach (ForestToolTypeConfig treeConfig in _ForestToolTypeConfig)
             {
+                Debug.Log("ForestTool config: " + treeConfig.TreeName);
 
                 if (true == treeConfig.TreeEnabled)
                 {

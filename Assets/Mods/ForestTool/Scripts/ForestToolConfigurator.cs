@@ -1,5 +1,5 @@
 using Bindito.Core;
-//using HarmonyLib;
+using HarmonyLib;
 using TimberApi.Tools.ToolSystem;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -18,7 +18,7 @@ namespace Mods.ForestTool.Scripts {
             containerDefinition.MultiBind<IToolFactory>().To<ForestToolFactory>().AsSingleton();
         }
 
-        //[HarmonyPatch(typeof(ForestTool), "EnterTool")]
+        [HarmonyPatch(typeof(ForestTool), "EnterTool")]
         public static class ForestToolEnterPatch
         {
             private static void Postfix(ref VisualElement __result)

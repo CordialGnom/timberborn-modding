@@ -123,6 +123,12 @@ namespace Mods.ForestTool.Scripts
                     prefabValid = true;
                 }
             }
+            else
+            {
+                // todo cordial: workaround to load hardcoded trees
+                prefabValid= true;  
+            }
+            
             return prefabValid;
         }
         // how timberapi gets specifications: 

@@ -156,6 +156,13 @@ namespace Mods.ForestTool.Scripts
                 // activate tool
                 this._selectionToolProcessor.Enter();
             }
+            else
+            {
+                Debug.LogError("ForestTool - Requirements not met");
+                this._selectionToolProcessor.Enter();
+            }
+
+            Debug.Log("ForestTool empty: " + ForestToolParam.NameEmpty);
 
             // hook for UI
             EnterTool();
@@ -181,7 +188,7 @@ namespace Mods.ForestTool.Scripts
 
             // workaround so that highlighting doesn't toggle at a high cycle, 
             // add preview of empty spots as pine trees. available to both default factions
-            if ("" == resourceName)
+            if (resourceName.Equals(ForestToolParam.NameEmpty, StringComparison.OrdinalIgnoreCase))
             {
                 resourceName = _defaultResource;
             }
@@ -212,7 +219,9 @@ namespace Mods.ForestTool.Scripts
             {
                 resourceName = GetRandomPlantableName();
 
-                if (ForestToolParam.NameEmpty == resourceName)
+                Debug.Log("ForestTool plant: " + resourceName);
+
+                if (resourceName.Equals(ForestToolParam.NameEmpty, StringComparison.OrdinalIgnoreCase))
                 {
                     v2coordinate = new Vector2Int(leveledCoordinate.x, leveledCoordinate.y);
                     boCanPlant = true; //_plantingService.IsResourceAt(v2coordinate);
