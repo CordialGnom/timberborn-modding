@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using TimberApi.Tools;
 using Timberborn.Buildings;
 using Timberborn.Localization;
+using Timberborn.PrefabSystem;
 using Timberborn.Planting;
 using Timberborn.PlantingUI;
 using Timberborn.ScienceSystem;
@@ -10,9 +13,12 @@ using Timberborn.SelectionToolSystem;
 using Timberborn.SingletonSystem;
 using Timberborn.TerrainSystem;
 using Timberborn.ToolSystem;
-using TimberApi.Tools.ToolSystem;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.UI.DefaultControls;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
+using Timberborn.BaseComponentSystem;
+using Timberborn.Modding;
 
 namespace Mods.ForestTool.Scripts
 {
@@ -40,7 +46,7 @@ namespace Mods.ForestTool.Scripts
         private TerrainAreaService _terrainAreaService;
 
         // availability 
-        private BuildingUnlockingService _buildingUnlockingService; 
+        private BuildingUnlockingService _buildingUnlockingService;
         private BuildingService _buildingService;
 
 
@@ -65,21 +71,25 @@ namespace Mods.ForestTool.Scripts
                             ILoc loc,
                             ToolManager toolManager,
                             ToolButtonService toolButtonService,
-                            EventBus eventBus )
+                            EventBus eventBus,
+                            BuildingService buildingService,
+                            BuildingUnlockingService buildingUnlockingService )
         {
 
-            _selectionToolProcessor =       selectionToolProcessorFactory.Create(   new Action<IEnumerable<Vector3Int>,
+            _selectionToolProcessor = selectionToolProcessorFactory.Create(new Action<IEnumerable<Vector3Int>,
                                                                                     Ray>(this.PreviewCallback),
                                                                                     new Action<IEnumerable<Vector3Int>,
                                                                                     Ray>(this.ActionCallback),
                                                                                     new Action(ShowNoneCallback),
-                                                                                   CursorKey );
+                                                                                   CursorKey);
 
-            _plantingAreaValidator =        plantingAreaValidator;
-            _plantingService =              plantingService;
-            _plantingSelectionService =     plantingSelectionService;
-            _terrainAreaService =           terrainAreaService;
-            _toolUnlockingService =         toolUnlockingService;
+            _plantingAreaValidator = plantingAreaValidator;
+            _plantingService = plantingService;
+            _plantingSelectionService = plantingSelectionService;
+            _terrainAreaService = terrainAreaService;
+            _toolUnlockingService = toolUnlockingService;
+            _buildingService = buildingService;
+            _buildingUnlockingService = buildingUnlockingService;
 
             _eventBus = eventBus;
             _loc = loc;
@@ -94,8 +104,8 @@ namespace Mods.ForestTool.Scripts
         public void Load()
         {
             _toolDescription = new ToolDescription.Builder(_loc.T(TitleLocKey)).AddSection(_loc.T(DescriptionLocKey)).Build();
-            _buildingUnlockingService = ForestToolDependencyContainer.GetInstance<BuildingUnlockingService>();
-            _buildingService = ForestToolDependencyContainer.GetInstance<BuildingService>();
+            // _buildingUnlockingService = DependencyContainer.GetInstance<BuildingUnlockingService>();
+           // _buildingService = DependencyContainer.GetInstance<BuildingService>();
 
 
             // did not achieve natural resource access through timberapi
@@ -124,26 +134,20 @@ namespace Mods.ForestTool.Scripts
             // the trees can be planted...
 
             // get faction (forester specific building)
-            string factionName =        ForestToolFactionAccess.GetFactionName();
-            string prefabName =         "";
+            string factionName = "Folktails"; //  ForestToolFactionAccess.GetFactionName();
+            string prefabName = "";
 
             if ("" != factionName)
             {
                 prefabName = "Forester." + factionName;
-                Debug.Log(prefabName);
             }
             else
             {
-                Debug.Log("Faction not found");
+                Debug.LogError("Faction not found");
             }
 
             // create a forester: 
             Building _forester = _buildingService.GetBuildingPrefab(prefabName);
-
-            if (null != _forester)
-            {
-                Debug.Log("Forester Built");
-            }
 
             IsUnlocked = _buildingUnlockingService.Unlocked(_forester);
 
@@ -153,12 +157,6 @@ namespace Mods.ForestTool.Scripts
                 this._selectionToolProcessor.Enter();
             }
 
-            Debug.Log("Lock: " + IsUnlocked);
-
-//[Info: Tree Tool] Forester.Folktails
-//[Info: Tree Tool] Forester Built
-//[Info   : Tree Tool] Lock: True
-
             // hook for UI
             EnterTool();
         }
@@ -166,7 +164,7 @@ namespace Mods.ForestTool.Scripts
         public VisualElement EnterTool()
         {
             return _root;
-        }    
+        }
 
         public bool IsUnlocked { get; set; }
 
@@ -228,7 +226,7 @@ namespace Mods.ForestTool.Scripts
                 else
                 {
                     boCanPlant = _plantingAreaValidator.CanPlant(leveledCoordinate, resourceName);
-                                  
+
                     if (true == boCanPlant)
                     {
                         _plantingService.SetPlantingCoordinates(leveledCoordinate, resourceName);

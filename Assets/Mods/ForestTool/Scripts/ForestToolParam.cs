@@ -183,25 +183,25 @@ namespace Mods.ForestTool.Scripts
                 }
             }
 
-            ImmutableArray<string> factionTreeNames = ForestToolFactionAccess.GetFactionTrees();
+            //ImmutableArray<string> factionTreeNames = ForestToolFactionAccess.GetFactionTrees();
 
-            foreach (string treeName in factionTreeNames)
-            {
-                Debug.Log("Found: " + treeName);
+            //foreach (string treeName in factionTreeNames)
+            //{
+            //    Debug.Log("Found: " + treeName);
 
-                if (ForestToolSpecificationService.VerifyPrefabName(treeName))
-                {
+            //    if (ForestToolSpecificationService.VerifyPrefabName(treeName))
+            //    {
 
 
-                    _ForestToolTypeConfig.Add(new ForestToolTypeConfig
-                    {
-                        TreeName = treeName,
-                        TreeEnabled = (treeName == "Mangrove") ? _DefaultActiveMangrove : true,
-                        TreeValue = 10,
-                        TreeValueRef = 10
-                    });
-                }
-            }
+            //        _ForestToolTypeConfig.Add(new ForestToolTypeConfig
+            //        {
+            //            TreeName = treeName,
+            //            TreeEnabled = (treeName == "Mangrove") ? _DefaultActiveMangrove : true,
+            //            TreeValue = 10,
+            //            TreeValueRef = 10
+            //        });
+            //    }
+            //}
 
             // link if empty spots are also to be handled
             _ForestToolTypeConfig.Add(new ForestToolTypeConfig

@@ -1,10 +1,10 @@
 {
-  "Id": "ForestTool",
+  "Id": "Cordial.ForestTool",
   "Type": "ForestTool",
   "GroupId": "Forestry",
   "Layout": "brown",
   "Order": 19,
-  "Icon": "Cordial.ForestTool/Cordial_ForestTool/ForestToolIcon",
+  "Icon": "Sprites/BottomBar/NaturalResourcesIcon",
   "NameLocKey": "Cordial.ForestTool.DisplayName",
   "DescriptionLocKey": "Cordial.ForestTool.Description",
   "DevMode": false,

@@ -13,6 +13,7 @@ using System.Linq;
 using UnityEngine;
 
 
+
 namespace Mods.ForestTool.Scripts
 {
     public static class ForestToolSpecificationService
@@ -67,7 +68,7 @@ namespace Mods.ForestTool.Scripts
 
         public static List<string> VerifyTreeNamesPrefab()
         {
-            PrefabNameMapper prefabNameMapper = ForestToolDependencyContainer.GetInstance<PrefabNameMapper>();
+            PrefabNameMapper prefabNameMapper = null; // ForestToolDependencyContainer.GetInstance<PrefabNameMapper>();
             List<string> treeNamesOut = new();
             treeNamesOut.Clear();       // ensure no artifacts are in new list
 
@@ -109,7 +110,7 @@ namespace Mods.ForestTool.Scripts
 
         public static bool VerifyPrefabName(string prefabNameInp)
         {
-            PrefabNameMapper prefabNameMapper = ForestToolDependencyContainer.GetInstance<PrefabNameMapper>();
+            PrefabNameMapper prefabNameMapper = null; // ForestToolDependencyContainer.GetInstance<PrefabNameMapper>();
 
             string prefabNameOut = "";
             bool prefabValid = false;

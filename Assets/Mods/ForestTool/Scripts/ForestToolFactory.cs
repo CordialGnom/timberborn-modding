@@ -1,8 +1,9 @@
-﻿using Timberborn.ToolSystem;
+﻿using TimberApi.Tools.ToolSystem;
+using Timberborn.ToolSystem;
 
 namespace Mods.ForestTool.Scripts
 {
-    public class ForestToolFactory
+    public class ForestToolFactory : IToolFactory
     {
         private readonly IForestTool _ForestTool;
         public string Id => "ForestTool";
@@ -11,12 +12,11 @@ namespace Mods.ForestTool.Scripts
             _ForestTool = ForestTool;
         }
 
-        public Tool Create(ToolGroup toolGroup = null)
+        public Tool Create(ToolSpecification toolSpecification, ToolGroup toolGroup = null)
         {
-            // somehow create a new tool, loading the according specs
-
             _ForestTool.SetToolGroup(toolGroup);
             return (Tool)_ForestTool;
         }
+
     }
 }
