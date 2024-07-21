@@ -20,6 +20,7 @@ namespace Mods.ForestTool.Scripts
     {
         private static List<string> _defaultTreeNames = ForestToolParam.DefaultTreeTypesAllFactions;
 
+
         //public static void GetAll()
         //{
 
@@ -82,7 +83,7 @@ namespace Mods.ForestTool.Scripts
 
                     if ("" != treeNameOut)
                     {
-                        Debug.Log("Found: " + treeNameOut);
+                        Debug.Log("VTNP Found: " + treeNameOut);
 
                         treeNamesOut.Add(treeNameOut);
                     }

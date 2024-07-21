@@ -27,6 +27,9 @@ namespace Mods.ForestTool.Scripts
         private static readonly string TitleLocKey = "Cordial.ForestTool.DisplayName";
         private static readonly string DescriptionLocKey = "Cordial.ForestTool.Description";
         private static readonly string CursorKey = "PlantingCursor";
+        public static readonly string ShortcutKey = "Cordial.ForestTool.KeyBinding.ForestToolConfigShortcut";
+
+        private static bool isUnlocked; 
 
         private static readonly string _defaultResource = "Pine";
 
@@ -48,6 +51,9 @@ namespace Mods.ForestTool.Scripts
         // availability 
         private BuildingUnlockingService _buildingUnlockingService;
         private BuildingService _buildingService;
+
+        private ForestToolFactionSpecService _forestToolFactionSpecService;
+        public ForestToolPanel _forestToolPanel;
 
 
         //private static readonly string[] _asResource = { "Oak", "Birch", "ChestnutTree", "Pine", "Maple" };
@@ -73,7 +79,9 @@ namespace Mods.ForestTool.Scripts
                             ToolButtonService toolButtonService,
                             EventBus eventBus,
                             BuildingService buildingService,
-                            BuildingUnlockingService buildingUnlockingService )
+                            BuildingUnlockingService buildingUnlockingService,
+                            ForestToolFactionSpecService forestToolFactionSpecService,
+                            ForestToolPanel forestToolPanel )
         {
 
             _selectionToolProcessor = selectionToolProcessorFactory.Create(new Action<IEnumerable<Vector3Int>,
@@ -90,12 +98,16 @@ namespace Mods.ForestTool.Scripts
             _toolUnlockingService = toolUnlockingService;
             _buildingService = buildingService;
             _buildingUnlockingService = buildingUnlockingService;
+            _forestToolFactionSpecService = forestToolFactionSpecService;
+            _forestToolPanel = forestToolPanel;
+
 
             _eventBus = eventBus;
             _loc = loc;
             _toolManager = toolManager;
             _toolButtonService = toolButtonService;
             _root = new VisualElement();
+
 
             EnterPlantingModeMethod = typeof(PlantingModeService).GetMethod("EnterPlantingMode", BindingFlags.NonPublic | BindingFlags.Instance);
             ExitPlantingModeMethod = typeof(PlantingModeService).GetMethod("ExitPlantingMode", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -105,7 +117,7 @@ namespace Mods.ForestTool.Scripts
         {
             _toolDescription = new ToolDescription.Builder(_loc.T(TitleLocKey)).AddSection(_loc.T(DescriptionLocKey)).Build();
             // _buildingUnlockingService = DependencyContainer.GetInstance<BuildingUnlockingService>();
-           // _buildingService = DependencyContainer.GetInstance<BuildingService>();
+            // _buildingService = DependencyContainer.GetInstance<BuildingService>();
 
 
             // did not achieve natural resource access through timberapi
@@ -134,46 +146,44 @@ namespace Mods.ForestTool.Scripts
             // the trees can be planted...
 
             // get faction (forester specific building)
-            string factionName = "Folktails"; //  ForestToolFactionAccess.GetFactionName();
+            string factionName = ForestToolFactionSpecService.FactionId;
+            
             string prefabName = "";
 
             if ("" != factionName)
             {
                 prefabName = "Forester." + factionName;
+
+                // create a forester to check if system is unlocked
+                Building _forester = _buildingService.GetBuildingPrefab(prefabName);
+
+                IsUnlocked = _buildingUnlockingService.Unlocked(_forester);
+
+                if (true == IsUnlocked)
+                {
+                    // activate tool
+                    this._selectionToolProcessor.Enter();
+                }
+                else
+                {
+                    Debug.LogError("ForestTool: Requirements not met");
+                }
             }
             else
             {
-                Debug.LogError("Faction not found");
+                Debug.LogError("ForestTool: Faction not found");
             }
-
-            // create a forester: 
-            Building _forester = _buildingService.GetBuildingPrefab(prefabName);
-
-            IsUnlocked = _buildingUnlockingService.Unlocked(_forester);
-
-            if (true == IsUnlocked)
-            {
-                // activate tool
-                this._selectionToolProcessor.Enter();
-            }
-            else
-            {
-                Debug.LogError("ForestTool - Requirements not met");
-                this._selectionToolProcessor.Enter();
-            }
-
-            Debug.Log("ForestTool empty: " + ForestToolParam.NameEmpty);
 
             // hook for UI
             EnterTool();
         }
 
-        public VisualElement EnterTool()
+        public ForestToolPanel EnterTool()
         {
-            return _root;
+            return this._forestToolPanel;
         }
 
-        public bool IsUnlocked { get; set; }
+        public bool IsUnlocked { get { return isUnlocked; } set { isUnlocked = value; } }
 
         public override void Exit()
         {

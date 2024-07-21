@@ -24,8 +24,7 @@ namespace Mods.ForestTool.Scripts {
     {
             // store items
             _visualElementErrorUI = _visualElementLoader.LoadVisualElement("ForestToolErrorUi");
-            _visualElementConfigUI = _visualElementLoader.LoadVisualElement("ForestToolErrorUi");
-
+            _visualElementConfigUI = _visualElementLoader.LoadVisualElement("ForestToolConfigUi");
     }
 
     public VisualElement GetErrorUiElement()

@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Timberborn.Modding;
 using UnityEngine;
 
 // runtime parameter storage (initialized from Config file)
@@ -14,6 +15,8 @@ namespace Mods.ForestTool.Scripts
         public static List<string> DefaultTreeTypesAllFactions = new() { "Birch", "Pine", "Oak" };
         private static bool _DefaultActiveMangrove = false;
         private static bool _DefaultActiveEmptySpots = true;
+
+        private static ForestToolFactionSpecService _forestToolFactionSpecService;
 
 
         private static List<ForestToolTypeConfig> _ForestToolTypeConfig = new();
@@ -84,6 +87,18 @@ namespace Mods.ForestTool.Scripts
             set
             {
                 _resourceCount = value;
+            }
+        }
+
+        public static ForestToolFactionSpecService ForestToolFactionSpecService
+        {
+            get
+            {
+                return _forestToolFactionSpecService;
+            }
+            set
+            {
+                _forestToolFactionSpecService = value;
             }
         }
 
@@ -184,25 +199,30 @@ namespace Mods.ForestTool.Scripts
                 }
             }
 
-            //ImmutableArray<string> factionTreeNames = ForestToolFactionAccess.GetFactionTrees();
+            if (null == _forestToolFactionSpecService)
+            {
+                Debug.LogError("ForestTool: No Faction Spec Service in parameters");
+            }
+            else
+            {
+                ImmutableArray<string> factionTreeNames = ForestToolFactionSpecService.GetFactionTrees();
 
-            //foreach (string treeName in factionTreeNames)
-            //{
-            //    Debug.Log("Found: " + treeName);
+                foreach (string treeName in factionTreeNames)
+                {
+                    Debug.Log("UFC Found: " + treeName);
 
-            //    if (ForestToolSpecificationService.VerifyPrefabName(treeName))
-            //    {
-
-
-            //        _ForestToolTypeConfig.Add(new ForestToolTypeConfig
-            //        {
-            //            TreeName = treeName,
-            //            TreeEnabled = (treeName == "Mangrove") ? _DefaultActiveMangrove : true,
-            //            TreeValue = 10,
-            //            TreeValueRef = 10
-            //        });
-            //    }
-            //}
+                    if (ForestToolFactionSpecService.VerifyPrefabName(treeName))
+                    {
+                        _ForestToolTypeConfig.Add(new ForestToolTypeConfig
+                        {
+                            TreeName = treeName,
+                            TreeEnabled = (treeName == "Mangrove") ? _DefaultActiveMangrove : true,
+                            TreeValue = 10,
+                            TreeValueRef = 10
+                        });
+                    }
+                }
+            }
 
             // link if empty spots are also to be handled
             _ForestToolTypeConfig.Add(new ForestToolTypeConfig
