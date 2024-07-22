@@ -1,0 +1,19 @@
+ID,Text,Comment
+Cordial.CutterTool.DisplayName,CutterTool,-
+Cordial.CutterTool.Description,Configurable tree cutting tool,-
+Cordial.CutterTool.KeyBindingGroup.CutterTool,Cutter Tool,-
+Cordial.CutterTool.KeyBinding.CutterToolConfigShortcut,Cutter tool configuration,-
+Cordial.CutterTool.CutterToolPanel.Title, Cutter Tool Setup,-
+Cordial.CutterTool.CutterToolPanel.PanelDescription, Configure trees and/or spots to be cut,-
+Cordial.CutterTool.CutterToolPanel.ToggleTree01, Birch,-
+Cordial.CutterTool.CutterToolPanel.ToggleTree02, Pine,-
+Cordial.CutterTool.CutterToolPanel.ToggleTree03, Chestnut,-
+Cordial.CutterTool.CutterToolPanel.ToggleTree04, Maple,-
+Cordial.CutterTool.CutterToolPanel.ToggleTree05, Oak,-
+Cordial.CutterTool.CutterToolPanel.ToggleTree06, Empty Spots,-
+Cordial.CutterTool.CutterToolPanel.ButtonConfirm, Confirm,-
+Cordial.CutterTool.CutterToolPanel.ButtonClose, Close,-
+Cordial.CutterTool.CutterToolPanel.ButtonReset, Reset,-
+Cordial.CutterTool.CutterTool.PanelDescription, You need to unlock Forester to plant trees,-
+Cordial.CutterTool.CutterTool.ButtonConfirm, Confirm,-
+preview.textfields.ingame.color, ColorView,-

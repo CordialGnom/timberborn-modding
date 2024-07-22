@@ -1,4 +1,5 @@
 using Bindito.Core;
+using TimberApi.Tools.ToolSystem;
 
 namespace Mods.CutterTool.Scripts {
   [Context("Game")]
@@ -6,7 +7,10 @@ namespace Mods.CutterTool.Scripts {
 
     public void Configure(IContainerDefinition containerDefinition)
     {
-      containerDefinition.Bind<CutterToolInitializer>().AsSingleton();
+        containerDefinition.Bind<CutterToolInitializer>().AsSingleton();
+        containerDefinition.Bind<ICutterTool>().To<CutterToolService>().AsSingleton();
+        containerDefinition.Bind<CutterToolService>().AsSingleton();
+        containerDefinition.MultiBind<IToolFactory>().To<CutterToolFactory>().AsSingleton();
     }
 
   }

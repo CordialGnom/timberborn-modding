@@ -28,7 +28,8 @@ namespace Mods.CutterTool.Scripts
 
 
         public CutterToolService(   SelectionToolProcessorFactory selectionToolProcessorFactory,
-                                    ToolUnlockingService toolUnlockingService ) 
+                                    ToolUnlockingService toolUnlockingService,
+                                    ILoc loc ) 
         {
             _selectionToolProcessor = selectionToolProcessorFactory.Create(new Action<IEnumerable<Vector3Int>,
                                                                                     Ray>(this.PreviewCallback),
@@ -37,6 +38,7 @@ namespace Mods.CutterTool.Scripts
                                                                                     new Action(ShowNoneCallback),
                                                                                    CursorKey);
             _toolUnlockingService = toolUnlockingService;
+            _loc = loc; 
 
         }
 
