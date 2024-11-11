@@ -1,15 +1,11 @@
 # Timberborn modding tools and examples
 
-## Important: version compatibility note
-
-This project requires Timberborn in version <b>0.6.0.0</b> or higher, also known as <b>Update 6</b>. This means that for the time being it is only compatible with the experimental version of the game.
-
 ## Overview
 This project's intent is to make you familiar with the Timberborn modding pipeline. It contains three example mods that showcase basic modding possibilities - adding new buildings, adding your own scripts and overwriting existing game elements. There are also the tools for automatic Timberborn DLLs import and building the mods.
 
 The repository also contains Timbermesh editor libraries, which allow you to use our [custom mesh format](https://github.com/mechanistry/timbermesh).
 
-You can learn more about modding Timberborn from this article, as well as from the [community wiki](https://timberborn.wiki.gg/wiki/Creating_Mods_(Update_6)).
+You can learn more about modding Timberborn from this article, as well as from the [community wiki](https://timberborn.wiki.gg/wiki/Creating_Mods).
 
 The best place to discuss the experimental build, as well as modding in general, is Timberborn's official Discord server: [https://discord.gg/timberborn](https://discord.gg/timberborn).
 
@@ -74,6 +70,29 @@ Documents/
             ├── Code.dll
             └── manifest.json
 ```
+
+## Compatibility versions
+If you want your mod to be compatible with multiple versions of the game, such as Stable and Experimental, you can place a specific version of your mod in a subfolder correspoding to the version of the game it is compatible with. That subfolder has to be named as `version-x` where `x` stands for the game version. You can use any number of digits, so both `version-0.6` and `version-0.6.8.4` will work. The game will load the mod from the subfolder that is closest to the current version of the game and not higher than it.
+
+Example:
+```
+Documents/
+└── Timberborn/
+    └── Mods/
+        └── MyFirstMod/
+            ├── version-0.6/
+            │   ├── AssetBundles/
+            │   │  └── ModAssets.assets
+            │   ├── Code.dll
+            │   └── manifest.json
+            └── version-0.7/
+                ├── AssetBundles/
+                │  └── ModAssets.assets
+                ├── Code.dll
+                └── manifest.json
+```
+
+Note that if any `version-x` folder is found, then rest of the content in the root folder will be ignored.
 
 ## Manifest
 Each mod has a `manifest.json` file in its root folder which looks as follows.
